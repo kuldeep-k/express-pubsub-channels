@@ -1,0 +1,53 @@
+<% include ./head %>
+<h2>Subscribe Messages </h2>
+<a href="/">Goto Home</a>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+<div class="row">
+<div class="col-md-2">Subscribe to : </div>
+<div class="col-md-8">
+    <select class="form-control" name="ch" id="ch">
+        <option value="">Select Channel</option>
+        <% for(var i=0;i<channel_data.length;i++) { %>
+        <option value="<%=channel_data[i].id%>"><%=channel_data[i].name%></option>
+        <% } %>
+    </select>
+</div>
+</div>
+<div class="row" style="margin-top:20px">
+    <div class="col-md-2"> Messages : </div>
+
+    <div class="col-md-8">
+        <ul id="messages" class="list-group"></ul>
+    </div>
+</div>
+
+<script>
+
+
+
+  $(function () {
+    var selected_channel = '';
+    var socket = io.connect('http://localhost:9990');
+    socket.on('chat message', function(msg){
+        console.log('HEREE');
+        console.log(msg);
+        var cmsg = JSON.parse(msg);
+        console.log(cmsg);
+        console.log([cmsg.channel , $('#ch').val()]);
+        if(cmsg.channel === $('#ch').val()) {
+            let dt = (new Date()).toISOString();
+            $('#messages').append($('<li class="list-group-item">').html('<em style="color: blue;">' + dt + '</em>' + ': <span style="color: grey;">' + cmsg.msg + '</span>'));
+        }
+
+    });
+    $('#ch').change(function(){
+        selected_channel = $('ch').val()
+    });
+
+
+  });
+</script>
+<% include ./foot %>

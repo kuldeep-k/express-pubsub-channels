@@ -1,0 +1,50 @@
+<% include ./head %>
+<div class="col-md-6"><h2>Publish Message </h2></div>
+<div class="col-md-6 text-right" style="margin-bottom: 20px;"><a href="/">Goto Home</a></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+
+<form class="form" action="">
+    <div class="row">
+            <div class="col-md-2">
+                <select class="form-control" name="ch" id="ch">
+                    <option value="">Select Channel</option>
+                    <% for(var i=0;i<channel_data.length;i++) { %>
+                    <option value="<%=channel_data[i].id%>"><%=channel_data[i].name%></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input id="m" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-md-2"><button class="btn btn-primary">Send</button></div>
+
+    </div>
+
+
+</form>
+<script>
+  $(function () {
+    var socket = io();
+
+    $('form').submit(function(e){
+      e.preventDefault(); // prevents page reloading
+      if($('#ch').val() === '') {
+          alert('Please select channel');
+          return false;
+      }
+      if($('#m').val() === '') {
+          alert('Blank message not allowed');
+          return false;
+      }
+      socket.emit('chat message', JSON.stringify({ channel: $('#ch').val(), msg: $('#m').val() }));
+      $('#m').val('');
+      return false;
+    });
+
+
+  });
+</script>
+<% include ./foot %>

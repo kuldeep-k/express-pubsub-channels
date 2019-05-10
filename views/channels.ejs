@@ -1,0 +1,34 @@
+<% include ./head %>
+
+<h2>Channels </h2>
+<a href="/">Goto Home</a>
+<form class="form" action="/channel-add" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="text" name="channel" id="channel" class="form-control" />
+                <button class="btn btn-primary">Add New Channel</button>
+            </div>
+        <div>
+    </div>
+
+
+</form>
+
+
+<table class="table table-responsive">
+    <thead><tr>
+        <th>Channel no</th>
+        <th>Channel name</th></tr>
+    </thead>
+    <tbody>
+        <% for(var i=0;i<channel_data.length;i++) { %>
+            <tr>
+                <td><%=channel_data[i].id%></th>
+                <td><%=channel_data[i].name%></th>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<% include ./foot %>
